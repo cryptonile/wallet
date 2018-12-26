@@ -56,6 +56,7 @@
 import kameleonClient from 'kameleon-client'
 import FileSaver from 'file-saver'
 import UploadButton from 'vuetify-upload-button'
+import swal from 'sweetalert'
 
 export default {
   components: {
@@ -107,8 +108,23 @@ export default {
       reader.readAsText(file)
 
       reader.onload = function () {
-        var walletPass = prompt('Enter your wallet password')
-        self.authenticate(reader.result, walletPass)
+        // var walletPass = prompt('Enter your wallet password')
+        var walletPass = ''
+        swal("Enter your wallet password", {
+          content: {
+            element: "input",
+            attributes: {
+              placeholder: "Type your password",
+              type: "password",
+            },
+          },
+          closeOnEsc: false,
+          closeOnClickOutside: false
+        })
+        .then((value) => {
+          walletPass = value
+          self.authenticate(reader.result, walletPass)
+        })
       }
     },
     authenticate(walletData, walletPassword) {
